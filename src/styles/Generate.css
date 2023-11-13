@@ -1,0 +1,43 @@
+.GenerateContainer {
+    width: 100%;
+    height: calc(100% - 48px);
+}
+
+.GenerateSettings {
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+}
+
+#Podręcznik,
+#Dział {
+    width: 25%;
+    margin: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#Podręcznik {
+    margin-left: 20px;
+}
+
+#Podręcznik>option,
+#Dział>option {
+    font-size: 16px;
+}
+
+.GenerateButton {
+    margin-left: 10px;
+    cursor: pointer;
+    width: 150px;
+    height: 32px;
+    background-color: var(--primary);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.GenerateButton:hover {
+    cursor: pointer;
+}
