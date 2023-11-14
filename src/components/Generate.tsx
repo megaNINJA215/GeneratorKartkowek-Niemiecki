@@ -8,11 +8,18 @@ function Generate() {
     const [sections, setSections] = useState([]);
     const [chosenSection, setChosenSection] = useState("");
 
+    const getInfo = async () => {
+        const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+        console.log(storeData);
+    }
+
+
     const getTextbooks = async () => {
         let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
         setTextbooks(storeData["textbooks"]);
     };
     useEffect(() => {
+        getInfo();
         getTextbooks();
     }, [])
     const handleTextbookChange = async () => {

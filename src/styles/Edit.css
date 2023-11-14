@@ -1,0 +1,146 @@
+@import url('../assets/colors.css');
+
+.EditContainer {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.textbookCard {
+    background-color: #d9d9d9;
+    border: 2px solid #b5b5b5;
+    min-width: 250px;
+    height: 80px;
+    margin: 10px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.textbookCard:hover {
+    cursor: pointer;
+    background-color: #b5b5b5;
+    border-color: #919191;
+}
+
+.textbookCardTitle {
+    font-size: 28px;
+    line-height: 40px;
+    margin: 8px;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.textbookCardSectionsNumber {
+    font-size: 14px;
+    line-height: 14px;
+    margin: 8px;
+    margin-top: 0px;
+}
+
+.PathAndDelete {
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 40px;
+    font-size: 32px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.addCard {
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    color: #116611;
+}
+
+.addCard:hover {
+    color: #00ff44;
+    background-color: #919191;
+    border-color: #717171;
+}
+
+.DeleteButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ED2B2A;
+    width: 120px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.DeleteButton:hover {
+    background-color: #D21312;
+    color: var(--text-button-active);
+    cursor: pointer;
+}
+
+.Path {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+}
+
+.PathElement {
+    padding: 5px;
+    margin-right: 4px;
+    border-radius: 5px;
+}
+
+.PathElement:hover {
+    background-color: var(--primary);
+    cursor: pointer;
+}
+
+.DeleteMode:hover {
+    background-color: #ED2B2A;
+}
+
+.addingCard {
+    position: relative;
+    justify-content: center;
+}
+
+.addingCard:hover {
+    cursor: auto;
+    background-color: #d9d9d9;
+    border-color: #b5b5b5;
+}
+
+.TitleInput {
+    position: absolute;
+    font-size: 20px;
+    height: 30px;
+    top: 15px;
+    border: none;
+    border-radius: 5px;
+    border-bottom: 2px solid #717171;
+    width: 90%;
+    margin-left: 10px;
+}
+
+.saveButton {
+    width: 60px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    background-color: var(--primary);
+    position: absolute;
+    bottom: 4px;
+    right: 10px;
+}
+
+.saveButton:hover {
+    cursor: pointer;
+    background-color: var(--secondary);
+}
