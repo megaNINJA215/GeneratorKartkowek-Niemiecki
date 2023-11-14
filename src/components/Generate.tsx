@@ -8,10 +8,6 @@ function Generate() {
     const [sections, setSections] = useState([]);
     const [chosenSection, setChosenSection] = useState("");
 
-    const getInfo = async () => {
-        const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
-        console.log(storeData);
-    }
 
 
     const getTextbooks = async () => {
@@ -19,7 +15,6 @@ function Generate() {
         setTextbooks(storeData["textbooks"]);
     };
     useEffect(() => {
-        getInfo();
         getTextbooks();
     }, [])
     const handleTextbookChange = async () => {
@@ -47,7 +42,9 @@ function Generate() {
                         return <option key={index} value={value}>{value}</option>
                     })}
                 </select>
-                <div className="GenerateButton" onClick={() => {
+                <div className="GenerateButton" onClick={async () => {
+                    let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+                    console.log(storeData[chosenTextbook][chosenSection]);
                     console.log("generuj:", chosenTextbook, chosenSection);
                 }}>Generuj</div>
             </div>

@@ -5,7 +5,7 @@ import { store } from "../store";
 function Edit() {
     const [textbooksData, setTextbooksData] = useState([{ "textbook": "", "sections": 0 }])
     const [sectionsData, setSectionsData] = useState([""])
-    const [wordsData, setWordsData] = useState([{ "polish": "Polska", "german": "gówno" }])
+    const [wordsData, setWordsData] = useState([{ "polish": "", "german": "", "isProverb": false }])
     const [chosenTextbook, setChosenTextbook] = useState("");
     const [chosenSection, setChosenSection] = useState("");
     const [isDeleteMode, setDeleteMode] = useState(false);
@@ -13,6 +13,9 @@ function Edit() {
     const addingValuesCardRef = useRef<HTMLDivElement>(null);
     const textbookTitleInput = useRef<HTMLInputElement>(null);
     const sectionTitleInput = useRef<HTMLInputElement>(null);
+    const wordPolishInput = useRef<HTMLInputElement>(null);
+    const wordGermanInput = useRef<HTMLInputElement>(null);
+    const proverbInput = useRef<HTMLInputElement>(null);
     const [firstClick, setFirstClick] = useState(true);
 
 
@@ -35,6 +38,18 @@ function Edit() {
         getTextbooks();
         setDeleteMode(false);
     }
+    const deleteWords = async (word: { "polish": string, "german": string, "isProverb": boolean }) => {
+        const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+        console.log(word);
+        storeData[chosenTextbook][chosenSection] = storeData[chosenTextbook][chosenSection].filter((value: { "polish": string, "german": string, "isProverb": boolean }) => {
+            return value.polish !== word.polish || value.german !== word.german || value.isProverb !== word.isProverb;
+        });
+        console.log(storeData[chosenTextbook][chosenSection]);
+        setWordsData(storeData[chosenTextbook][chosenSection]);
+        await store.set("GeneratorData", storeData);
+        await store.save();
+        setDeleteMode(false);
+    }
     const getTextbooks = async () => {
         let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
         let textbooks = storeData["textbooks"];
@@ -48,12 +63,14 @@ function Edit() {
     const getSections = async () => {
         if (chosenTextbook != "") {
             let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
-            let sections = storeData[chosenTextbook]["sections"];
-            let newSectionsData: string[] = [];
-            for (let secttion in sections) {
-                newSectionsData.push(sections[secttion])
-            }
-            setSectionsData(newSectionsData);
+            setSectionsData(storeData[chosenTextbook]["sections"]);
+        }
+    }
+    const getWords = async () => {
+        if (chosenSection != "") {
+            let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+            let words = storeData[chosenTextbook][chosenSection];
+            setWordsData(words);
         }
     }
     const addTextbook = async () => {
@@ -72,11 +89,25 @@ function Edit() {
         if (sectionTitleInput.current !== null && sectionTitleInput.current.value !== "") {
             const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
             storeData[chosenTextbook]["sections"].push(sectionTitleInput.current.value);
-            storeData[chosenTextbook][sectionTitleInput.current.value] = { "words": [], "proverbs": [] };
+            storeData[chosenTextbook][sectionTitleInput.current.value] = [];
             await store.set("GeneratorData", storeData);
             await store.save();
             getSections();
             getTextbooks();
+        }
+        setAddingMode(false);
+        setFirstClick(true);
+    }
+    const addWords = async () => {
+        if (wordGermanInput.current !== null && wordPolishInput.current !== null) {
+            if (wordGermanInput.current.value != "" && wordPolishInput.current.value != "") {
+                const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+                storeData[chosenTextbook][chosenSection]
+                    .push({ "polish": wordPolishInput.current.value, "german": wordGermanInput.current.value, "isProverb": proverbInput.current?.checked });
+                setWordsData(storeData[chosenTextbook][chosenSection])
+                await store.set("GeneratorData", storeData);
+                await store.save();
+            }
         }
         setAddingMode(false);
         setFirstClick(true);
@@ -88,6 +119,9 @@ function Edit() {
     useEffect(() => {
         getSections();
     }, [chosenTextbook])
+    useEffect(() => {
+        getWords();
+    }, [chosenSection])
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (addingValuesCardRef.current && !addingValuesCardRef.current.contains(event.target as Node)) {
@@ -117,6 +151,7 @@ function Edit() {
                 <div className="Path">
                     <div className="PathElement" onClick={() => {
                         setChosenTextbook("");
+                        setChosenSection("");
                     }}>C:/</div>
                     <div className={chosenTextbook != "" ? "PathElement" : ""} onClick={() => {
                         setChosenSection("");
@@ -174,13 +209,21 @@ function Edit() {
             {chosenSection != "" && <div className="Cards">
                 {wordsData.map((value, index) => {
                     return <div key={index} className={isDeleteMode ? "textbookCard DeleteMode" : "textbookCard"} onClick={() => {
+                        if (isDeleteMode) {
+                            deleteWords(value);
+                        }
+                        console.log(value.german, value.polish, value.isProverb)
                     }}>
-                        <div>Jeszcze nic</div>
-                        <div>{value.polish}</div>
                         <div>{value.german}</div>
+                        <div>{value.polish}</div>
                     </div>
                 })}
-
+                {isAdding && <div className="textbookCard addingCard" ref={addingValuesCardRef}>
+                    <input inputMode="text" className="wordInput" placeholder="Po Niemiecku..." ref={wordGermanInput} />
+                    <input inputMode="text" className="wordInput" placeholder="Po Polsku..." ref={wordPolishInput} />
+                    <label className="proverbInput"><input type="checkbox" ref={proverbInput} />Powiedzenie</label>
+                    <div className="saveButton" onClick={() => { addWords() }}>Zapisz</div>
+                </div>}
 
 
                 <div className="textbookCard addCard" onClick={() => { setAddingMode(true); }}>Dodaj wyrażenie</div>
