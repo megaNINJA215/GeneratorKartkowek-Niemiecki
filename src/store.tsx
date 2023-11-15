@@ -8,27 +8,7 @@ export const loadData = async () => {
 export const clearData = async () => {
     store.clear();
     store.set("GeneratorData", {
-        "textbooks": ["Effekt 2", "Effekt 1"],
-        "Effekt 2": {
-            "sections": ["Kapitel 1", "Kapitel 2", "Kapitel 3", "Kapitel 4", "Kapitel 5", "Kapitel 6", "Kapitel 7"],
-            "Kapitel 1": [],
-            "Kapitel 2": [],
-            "Kapitel 3": [],
-            "Kapitel 4": [],
-            "Kapitel 5": [],
-            "Kapitel 6": [],
-            "Kapitel 7": []
-        },
-        "Effekt 1": {
-            "sections": ["Kapitel 11", "Kapitel 22", "Kapitel 33", "Kapitel 44", "Kapitel 55", "Kapitel 66", "Kapitel 77"],
-            "Kapitel 11": [],
-            "Kapitel 22": [],
-            "Kapitel 33": [],
-            "Kapitel 44": [],
-            "Kapitel 55": [],
-            "Kapitel 66": [],
-            "Kapitel 77": []
-        }
+        "textbooks": []
     });
     await store.save();
 }

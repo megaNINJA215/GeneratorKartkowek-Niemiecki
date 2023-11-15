@@ -6,7 +6,6 @@
 .GenerateSettings {
     display: flex;
     flex-direction: row;
-    user-select: none;
 }
 
 #Podręcznik,
@@ -40,4 +39,55 @@
 
 .GenerateButton:hover {
     cursor: pointer;
+}
+
+
+
+.Warning {
+    color: red;
+    font-size: 24px;
+    margin-left: 10px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    height: 24px;
+}
+
+.WarningDummy {
+    margin-bottom: 10px;
+    height: 24px;
+}
+
+.TestsContainer {
+    width: 100%;
+    height: calc(100% - 42px);
+    margin-top: 10px;
+}
+
+.Tests {
+    display: flex;
+    flex-direction: row;
+}
+
+.ReadyTests {
+    width: calc(25% - 30px);
+    padding-left: 15px;
+    padding-right: 15px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.Tests>.ReadyTests:first-child {
+    border-left: none;
+}
+
+.Tests>.ReadyTests:last-child {
+    border-right: none;
+}
+
+.TestTitle {
+    text-align: center;
+}
+
+.TestContent {
+    user-select: text;
 }
