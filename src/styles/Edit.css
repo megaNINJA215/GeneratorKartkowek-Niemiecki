@@ -32,6 +32,62 @@
     font-weight: 600;
 }
 
+.sectionCard {
+    background-color: #d9d9d9;
+    border: 2px solid #b5b5b5;
+    min-width: 250px;
+    height: 80px;
+    margin: 10px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sectionCard:hover {
+    cursor: pointer;
+    background-color: #b5b5b5;
+    border-color: #919191;
+}
+
+.sectionCardTitle {
+    font-size: 28px;
+    line-height: 40px;
+    margin: 8px;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.wordCard {
+    background-color: #d9d9d9;
+    border: 2px solid #b5b5b5;
+    min-width: 185px;
+    height: 80px;
+    margin: 10px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 15px;
+}
+
+.wordCard:hover {
+    cursor: pointer;
+    background-color: #b5b5b5;
+    border-color: #919191;
+}
+
+.wordCardTitle {
+    font-size: 28px;
+    line-height: 40px;
+    margin: 8px;
+    margin-bottom: 4px;
+}
+
+.GermanWord {
+    font-weight: bold;
+}
+
 .textbookCardSectionsNumber {
     font-size: 14px;
     line-height: 14px;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../styles/Generate.css";
 import { store } from "../store";
+import ReadyTest from "./ReadyTest";
 
 function Generate() {
     const [textbooks, setTextbooks] = useState([]);
@@ -10,8 +11,6 @@ function Generate() {
     const [warning, setWarning] = useState(false);
     const [tests, setTests] = useState<string[][]>([[], [], [], []])
     const [isTestsReady, setTestsReady] = useState(false);
-    // const [words, setWordsData] = useState([]);
-    // const [proberbs, setProverbsData] = useState([]);
 
 
     const generateTests = async () => {
@@ -95,6 +94,9 @@ function Generate() {
                 setTestsReady(false);
                 setTests([[], [], [], []]);
             }
+        } else {
+            setTestsReady(false);
+            setTests([[], [], [], []]);
         }
     }
     const getTextbooks = async () => {
@@ -123,52 +125,27 @@ function Generate() {
                         return <option key={index} value={value}>{value}</option>
                     })}
                 </select>
+
                 <select name="Dział" id="Dział" value={chosenSection} onChange={(e) => { setChosenSection(e.target.value) }}>
                     <option value="" hidden>--</option>
                     {sections.map((value, index) => {
                         return <option key={index} value={value}>{value}</option>
                     })}
                 </select>
+
                 <div className="GenerateButton" onClick={() => {
                     generateTests()
                 }}>Generuj</div>
+
             </div>
             {isTestsReady && <div className="TestsContainer">
                 {warning && <div className="Warning">Słowa w kartkówkach się powtarzają, powodem jest za mała liczba danych</div>}
                 {!warning && <div className="WarningDummy" />}
                 <div className="Tests">
-                    <div className="ReadyTests">
-                        <div className="TestTitle">Grupa 1</div>
-                        <div className="TestContent">
-                            {tests[0].map((item, index) => {
-                                return <div key={index}>{index + 1}. {item}</div>
-                            })}
-                        </div>
-                    </div>
-                    <div className="ReadyTests">
-                        <div className="TestTitle">Grupa 2</div>
-                        <div className="TestContent">
-                            {tests[1].map((item, index) => {
-                                return <div key={index}>{index + 1}. {item}</div>
-                            })}
-                        </div>
-                    </div>
-                    <div className="ReadyTests">
-                        <div className="TestTitle">Grupa 3</div>
-                        <div className="TestContent">
-                            {tests[2].map((item, index) => {
-                                return <div key={index}>{index + 1}. {item}</div>
-                            })}
-                        </div>
-                    </div>
-                    <div className="ReadyTests">
-                        <div className="TestTitle">Grupa 4</div>
-                        <div className="TestContent">
-                            {tests[3].map((item, index) => {
-                                return <div key={index}>{index + 1}. {item}</div>
-                            })}
-                        </div>
-                    </div>
+                    <ReadyTest id={0} tests={tests} />
+                    <ReadyTest id={1} tests={tests} />
+                    <ReadyTest id={2} tests={tests} />
+                    <ReadyTest id={3} tests={tests} />
                 </div>
             </div>}
         </div>
