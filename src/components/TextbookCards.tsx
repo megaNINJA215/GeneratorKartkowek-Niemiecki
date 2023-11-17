@@ -1,5 +1,5 @@
+import { invoke } from "@tauri-apps/api";
 import { useRef } from "react";
-import { store } from "../store";
 
 interface TextbookCardProps {
     isAdding: boolean
@@ -30,21 +30,21 @@ function TextbookCard({
     const textbookTitleInput = useRef<HTMLInputElement>(null);
 
     const deleteTextbook = async (textbook: string) => {
-        const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+        const storeData = JSON.parse(await invoke("get_data"));
         delete storeData[textbook];
         storeData["textbooks"] = storeData["textbooks"].filter((value: string) => { return value !== textbook });
-        await store.set("GeneratorData", storeData);
-        await store.save();
+        const dataToSave = JSON.stringify(storeData);
+        await invoke("save_data", { newData: dataToSave });
         getTextbooks();
         setDeleteMode(false);
     }
     const addTextbook = async () => {
         if (textbookTitleInput.current !== null && textbookTitleInput.current.value !== "") {
-            const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+            const storeData = JSON.parse(await invoke("get_data"));
             storeData["textbooks"].push(textbookTitleInput.current.value);
             storeData[textbookTitleInput.current.value] = { "sections": [] };
-            await store.set("GeneratorData", storeData);
-            await store.save();
+            const dataToSave = JSON.stringify(storeData);
+            await invoke("save_data", { newData: dataToSave });
             getTextbooks();
         }
         setAddingMode(false);
@@ -68,7 +68,7 @@ function TextbookCard({
             <input inputMode="text" className="TitleInput" placeholder="Tytuł..." ref={textbookTitleInput} />
             <div className="saveButton" onClick={() => { addTextbook() }}>Zapisz</div>
         </div>}
-        <div className="textbookCard addCard" onClick={() => { console.log(isAdding); setAddingMode(true); }}>Dodaj podręcznik</div>
+        <div className="textbookCard addCard" onClick={() => { setAddingMode(true); }}>Dodaj podręcznik</div>
     </div>
     );
 }

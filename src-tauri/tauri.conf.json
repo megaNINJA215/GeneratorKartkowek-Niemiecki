@@ -17,15 +17,17 @@
         "open": true
       },
       "fs": {
+        "all": true,
         "scope": [
           "$RESOURCE/*"
         ]
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {
-      "resources": [
-        "./data.dat"
-      ],
+      "resources": [],
       "active": true,
       "targets": "all",
       "identifier": "com.GeneratorKartkowek.dev",

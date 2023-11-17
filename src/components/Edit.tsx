@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "../styles/Edit.css";
-import { store } from "../store";
 import Path from "./Path";
 import TextbookCard from "./TextbookCards";
 import SectionCard from "./SectionCards";
 import WordsCard from "./WordsCards";
+import { invoke } from "@tauri-apps/api";
 
 function Edit() {
     const [textbooksData, setTextbooksData] = useState([{ "textbook": "", "sections": 0 }])
@@ -19,7 +19,7 @@ function Edit() {
 
 
     const getTextbooks = async () => {
-        let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+        let storeData = JSON.parse(await invoke("get_data"));
         let textbooks = storeData["textbooks"];
         let newTextbooksData: { "textbook": string, "sections": number }[] = [];
         for (let textbook in textbooks) {
@@ -30,13 +30,13 @@ function Edit() {
     }
     const getSections = async () => {
         if (chosenTextbook != "") {
-            let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+            let storeData = JSON.parse(await invoke("get_data"));
             setSectionsData(storeData[chosenTextbook]["sections"]);
         }
     }
     const getWords = async () => {
         if (chosenSection != "") {
-            let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+            let storeData = JSON.parse(await invoke("get_data"));
             let words = storeData[chosenTextbook][chosenSection];
             setWordsData(words);
         }

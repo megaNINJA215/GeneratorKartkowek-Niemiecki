@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../styles/Generate.css";
-import { store } from "../store";
 import ReadyTest from "./ReadyTest";
+import { invoke } from "@tauri-apps/api";
 
 function Generate() {
     const [textbooks, setTextbooks] = useState([]);
@@ -16,7 +16,7 @@ function Generate() {
     const generateTests = async () => {
         if (chosenTextbook != "" && chosenSection != "") {
             setWarning(false);
-            const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+            const storeData = JSON.parse(await invoke("get_data"));
             let words: { "polish": string, "german": string, "isProverb": boolean }[] = [];
             let proverbs: { "polish": string, "german": string, "isProverb": boolean }[] = [];
             let Tests: string[][] = [[], [], [], []];
@@ -100,14 +100,14 @@ function Generate() {
         }
     }
     const getTextbooks = async () => {
-        let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+        let storeData = JSON.parse(await invoke("get_data"));
         setTextbooks(storeData["textbooks"]);
     };
     useEffect(() => {
         getTextbooks();
     }, [])
     const handleTextbookChange = async () => {
-        let storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+        let storeData = JSON.parse(await invoke("get_data"));
         if (chosenTextbook !== "") {
             setSections(storeData[chosenTextbook]["sections"]);
         }

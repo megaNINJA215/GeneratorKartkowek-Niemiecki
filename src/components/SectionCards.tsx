@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { store } from "../store";
+import { invoke } from "@tauri-apps/api";
 
 interface SectionCardProps {
     sectionsData: string[]
@@ -32,22 +32,22 @@ function SectionCard({
 }: SectionCardProps) {
     const sectionTitleInput = useRef<HTMLInputElement>(null);
     const deleteSection = async (section: string) => {
-        const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+        const storeData = JSON.parse(await invoke("get_data"));
         delete storeData[chosenTextbook][section];
         storeData[chosenTextbook]["sections"] = storeData[chosenTextbook]["sections"].filter((value: string) => { return value !== section });
         setSectionsData(storeData[chosenTextbook]["sections"]);
-        await store.set("GeneratorData", storeData);
-        await store.save();
+        const dataToSave = JSON.stringify(storeData);
+        await invoke("save_data", { newData: dataToSave });
         getTextbooks();
         setDeleteMode(false);
     }
     const addSection = async () => {
         if (sectionTitleInput.current !== null && sectionTitleInput.current.value !== "") {
-            const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+            const storeData = JSON.parse(await invoke("get_data"));
             storeData[chosenTextbook]["sections"].push(sectionTitleInput.current.value);
             storeData[chosenTextbook][sectionTitleInput.current.value] = [];
-            await store.set("GeneratorData", storeData);
-            await store.save();
+            const dataToSave = JSON.stringify(storeData);
+            await invoke("save_data", { newData: dataToSave });
             getSections();
             getTextbooks();
         }

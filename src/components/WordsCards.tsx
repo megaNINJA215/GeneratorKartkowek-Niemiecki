@@ -1,5 +1,5 @@
+import { invoke } from "@tauri-apps/api";
 import { useRef } from "react";
-import { store } from "../store";
 
 interface WordsCardProps {
     wordsData: {
@@ -39,26 +39,26 @@ function WordsCard({
     const proverbInput = useRef<HTMLInputElement>(null);
 
     const deleteWords = async (word: { "polish": string, "german": string, "isProverb": boolean }) => {
-        const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+        const storeData = JSON.parse(await invoke("get_data"));
         console.log(word);
         storeData[chosenTextbook][chosenSection] = storeData[chosenTextbook][chosenSection].filter((value: { "polish": string, "german": string, "isProverb": boolean }) => {
             return value.polish !== word.polish || value.german !== word.german || value.isProverb !== word.isProverb;
         });
         console.log(storeData[chosenTextbook][chosenSection]);
         setWordsData(storeData[chosenTextbook][chosenSection]);
-        await store.set("GeneratorData", storeData);
-        await store.save();
+        const dataToSave = JSON.stringify(storeData);
+        await invoke("save_data", { newData: dataToSave });
         setDeleteMode(false);
     }
     const addWords = async () => {
         if (wordGermanInput.current !== null && wordPolishInput.current !== null) {
             if (wordGermanInput.current.value != "" && wordPolishInput.current.value != "") {
-                const storeData = JSON.parse(JSON.stringify(await store.get("GeneratorData")));
+                const storeData = JSON.parse(await invoke("get_data"));
                 storeData[chosenTextbook][chosenSection]
                     .push({ "polish": wordPolishInput.current.value, "german": wordGermanInput.current.value, "isProverb": proverbInput.current?.checked });
                 setWordsData(storeData[chosenTextbook][chosenSection])
-                await store.set("GeneratorData", storeData);
-                await store.save();
+                const dataToSave = JSON.stringify(storeData);
+                await invoke("save_data", { newData: dataToSave });
             }
         }
         setAddingMode(false);
